@@ -39,10 +39,10 @@ input,textarea,select{font:inherit;font-size:16px;color:var(--text)}
 .hdr-in{max-width:828px;margin:0 auto}
 #scroller{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;background:var(--bg)}
 .wrap{max-width:860px;margin:0 auto;padding:0 16px 96px}
-.tabbar{flex:none;background:var(--bar);border-top:.5px solid var(--sep);padding-bottom:env(safe-area-inset-bottom);z-index:2}
+.tabbar{flex:none;background:var(--bar);border-top:.5px solid var(--sep);padding-bottom:max(calc(env(safe-area-inset-bottom) - 16px),4px);z-index:2}
 .tabbar-in{max-width:640px;margin:0 auto;display:flex}
-.tabbar button{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:7px 0 5px;font-size:10.5px;font-weight:500;color:var(--muted);position:relative}
-.tabbar button svg{width:26px;height:26px}
+.tabbar button{flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;padding:5px 0 2px;font-size:10px;font-weight:500;color:var(--muted);position:relative}
+.tabbar button svg{width:23px;height:23px}
 .tabbar button.on{color:var(--accent)}
 .tabbar .dot{position:absolute;top:4px;left:calc(50% + 8px);min-width:17px;height:17px;border-radius:9px;background:var(--danger);color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center;padding:0 4px}
 .tabbar .dot.run{background:var(--ok);min-width:10px;width:10px;height:10px;top:6px;padding:0}
@@ -61,7 +61,8 @@ input,textarea,select{font:inherit;font-size:16px;color:var(--text)}
 .card{background:var(--card);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
 .daycard{margin-top:14px}
 .dayhead{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px 8px 8px 14px}
-.dayhead b{font-size:18px}
+.dayhead b{font-size:18px;min-width:0}
+.dayhead .badge{white-space:nowrap}
 .dayhead .dd{color:var(--muted);font-size:14px;display:flex;align-items:center;gap:4px}
 .dayhead .addday{width:32px;height:32px;border-radius:16px;display:grid;place-items:center;color:var(--accent);background:var(--fill)}
 .dayhead .addday svg{width:18px;height:18px}
@@ -117,7 +118,7 @@ button.row:active,.row.tap:active{background:var(--fill)}
 .due-soon{color:var(--warn);font-weight:600}
 .bell{width:18px;height:18px;color:var(--muted);flex:none;margin-top:4px}
 .bell.on{color:var(--ok)}
-.fab{position:fixed;right:max(20px,calc(50% - 410px));bottom:calc(72px + env(safe-area-inset-bottom));width:58px;height:58px;border-radius:29px;background:var(--accent);color:#fff;display:grid;place-items:center;box-shadow:0 6px 18px rgba(0,122,255,.4);z-index:15}
+.fab{position:fixed;right:max(20px,calc(50% - 410px));bottom:calc(58px + max(calc(env(safe-area-inset-bottom) - 16px),4px));width:58px;height:58px;border-radius:29px;background:var(--accent);color:#fff;display:grid;place-items:center;box-shadow:0 6px 18px rgba(0,122,255,.4);z-index:15}
 .fab svg{width:28px;height:28px}
 .bigbtn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px;border-radius:12px;background:var(--accent);color:#fff;font-weight:600;font-size:16px;text-decoration:none;text-align:center}
 .bigbtn.sec2{background:var(--fill);color:var(--accent)}
@@ -270,6 +271,39 @@ input[type=date].inp,input[type=time].inp{min-height:44px}
 .mt{margin-top:14px}
 .empty{color:var(--muted);text-align:center;padding:40px 20px;font-size:15px}
 .schedrow .bd{flex:1}
+/* plan: day strip + hour timeline */
+.daystrip{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:6px}
+.dsb{display:flex;flex-direction:column;align-items:center;padding:4px 0 3px;border-radius:12px;font-size:11px;color:var(--muted);font-weight:600}
+.dsb b{font-size:17px;color:var(--text);font-weight:600;line-height:1.25}
+.dsb.today b{color:var(--accent)}
+.dsb.sel{background:var(--accent);color:rgba(255,255,255,.85)}
+.dsb.sel b{color:#fff}
+.dsb .dots{display:flex;gap:2px;height:5px;margin-top:1px}
+.dsb .dots i{width:5px;height:5px;border-radius:3px}
+.dsb.sel .dots i{background:#fff !important}
+.subhd{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;padding:4px 14px 0}
+.tl-wrap{padding:12px 10px 8px 4px;border-top:.5px solid var(--sep);margin-top:6px}
+.tl{position:relative;cursor:pointer}
+.tl-h{position:absolute;left:44px;right:0;height:0;border-top:.5px solid var(--sep)}
+.tl-h.half{border-top-style:dashed;opacity:.45}
+.tl-h span{position:absolute;left:-44px;top:-8px;width:40px;text-align:right;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+.tl-b{position:absolute;border-radius:8px;padding:3px 7px;overflow:hidden;font-size:12px;line-height:1.25;border-left:4px solid;text-align:left;display:block;color:var(--muted);z-index:1}
+.tl-b.cls{background:var(--fill);opacity:.85}
+.tl-b.ses{box-shadow:0 1px 2px rgba(0,0,0,.08);padding-right:28px}
+.tl-b b{display:block;font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tl-b span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tl-b.done{opacity:.5}
+.tl-b.done b{text-decoration:line-through}
+.tl-b .ck{position:absolute;right:5px;top:4px;width:20px;height:20px;border-radius:10px;border:2px solid var(--muted);display:grid;place-items:center}
+.tl-b .ck svg{width:12px;height:12px;color:#fff;opacity:0}
+.tl-b .ck.on{background:var(--ok);border-color:var(--ok)}
+.tl-b .ck.on svg{opacity:1}
+.tl-now{position:absolute;left:44px;right:0;height:2px;background:var(--danger);z-index:2;pointer-events:none}
+.tl-now::before{content:"";position:absolute;left:-4px;top:-3px;width:8px;height:8px;border-radius:4px;background:var(--danger)}
+.strows{margin-top:10px}
+.strow{display:flex;align-items:center;gap:8px;margin-top:6px}
+.strow span{flex:1;font-weight:600;font-size:14px}
+.strow .inp{width:auto;flex:none;padding:8px 10px;min-height:38px}
 </style>
 </head>
 <body>
@@ -342,6 +376,7 @@ function relDue(s){
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
 const tmin=t=>{const[a,b]=t.split(':').map(Number);return a*60+b;};
 const fmtT=t=>t?t.replace(/^0/,''):'';
+const addMin=(t,m)=>{const x=tmin(t)+m;return `${pad(Math.floor(x/60)%24)}:${pad(x%60)}`;};
 const fmtMin=m=>m>=60?`${Math.floor(m/60)} h ${m%60?m%60+' min':''}`.trim():`${m} min`;
 function debounce(fn,ms){let t;const f=(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms);};f.flush=(...a)=>{clearTimeout(t);return fn(...a);};return f;}
 function autosize(t){const f=()=>{t.style.height='auto';t.style.height=Math.max(t.scrollHeight,parseInt(getComputedStyle(t).minHeight)||0)+'px';};t.addEventListener('input',f);requestAnimationFrame(f);return t;}
@@ -385,12 +420,11 @@ const DEFAULT_SCHEDULE=[
   {id:'c10',day:3,start:'13:15',end:'14:45',name:'Rachunkowość',kind:'C',room:'11A'},
   {id:'c11',day:3,start:'15:00',end:'16:30',name:'Matematyka',kind:'C',room:'203C'},
 ];
-const DEFAULT_SETTINGS={remindTime:'18:00',morning:false,weekend:false,autoPlan:true,studyWork:25,studyBreak:5,studyCycles:4,shortcuts:false};
-const SC_TIMER='Notatnik Minutnik',SC_END='Notatnik Koniec';
+const DEFAULT_SETTINGS={remindTime:'18:00',morning:false,weekend:false,autoPlan:true};
 const S={tab:'week',weekOff:0,
   taskView:'list',taskWeekOff:0,taskMonthOff:0,taskSel:null,filter:'all',showDone:false,
-  planView:'week',planOff:1,planMonthOff:0,planSel:null,
-  settings:{...DEFAULT_SETTINGS},schedule:[],tasks:[],notes:new Map(),study:[],timer:null,studyPick:''};
+  planView:'week',planOff:0,planDay:null,planMonthOff:0,planSel:null,
+  settings:{...DEFAULT_SETTINGS},schedule:[],tasks:[],notes:new Map(),study:[]};
 
 function migrateTask(t){
   let changed=false;
@@ -406,12 +440,10 @@ async function load(){
   for(const raw of await dbAll('tasks')){const[t,ch]=migrateTask(raw);if(ch)await dbPut('tasks',t);S.tasks.push(t);}
   S.notes=new Map((await dbAll('notes')).map(n=>[n.key,n]));
   S.study=await dbGet('kv','study')||[];
-  S.timer=await dbGet('kv','timer')||null;
-  try{const t=sessionStorage.getItem('tab');if(t)S.tab=t;}catch(e){}
+  try{const t=sessionStorage.getItem('tab');if(t&&['week','tasks','plan','settings'].includes(t))S.tab=t;}catch(e){}
 }
 const saveSettings=()=>dbPut('kv',S.settings,'settings');
 const saveSchedule=()=>dbPut('kv',S.schedule,'schedule');
-const saveTimer=()=>dbPut('kv',S.timer,'timer');
 async function saveTask(t){await dbPut('tasks',t);const i=S.tasks.findIndex(x=>x.id===t.id);if(i>=0)S.tasks[i]=t;else S.tasks.push(t);}
 async function deleteTask(t){for(const f of t.files||[])await dbDel('files',f);await dbDel('tasks',t.id);S.tasks=S.tasks.filter(x=>x.id!==t.id);}
 async function saveNote(n){
@@ -433,7 +465,7 @@ function nextClass(subject,fromDate,kind){
 function defaultPlanDay(due){const td=todayISO();if(due<=td)return td;const prev=iso(addDays(parseD(due),-1));return prev<td?td:prev;}
 const taskName=t=>t.title||TYPES[t.type].label;
 const sessionsOn=ds=>{const out=[];for(const t of S.tasks)for(const s of t.sessions||[])if(s.date===ds)out.push([t,s]);
-  return out.sort((a,b)=>(a[0].due||'9999').localeCompare(b[0].due||'9999'));};
+  return out.sort((a,b)=>(a[1].time||'99').localeCompare(b[1].time||'99')||(a[0].due||'9999').localeCompare(b[0].due||'9999'));};
 const needsPlanning=()=>{const td=todayISO();return sortTasks(openTasks().filter(t=>!(t.sessions||[]).some(s=>s.date>=td)&&(t.type!=='todo'||(t.sessions||[]).length)));};
 
 /* ---------- files ---------- */
@@ -550,15 +582,15 @@ function render(){
   const hdr=$('#hdr'),view=$('#view');hdr.innerHTML='';view.innerHTML='';
   document.querySelectorAll('.fab').forEach(f=>f.remove());
   if(!S._keepToast)document.querySelectorAll('.toast').forEach(t=>t.remove());S._keepToast=false;
-  ({week:renderWeek,tasks:renderTasks,plan:renderPlan,study:renderStudy,settings:renderSettings}[S.tab]||renderWeek)(hdr,view);
+  ({week:renderWeek,tasks:renderTasks,plan:renderPlan,settings:renderSettings}[S.tab]||renderWeek)(hdr,view);
   renderTabs();
 }
 function go(tab){if(S.tab!==tab){S.tab=tab;render();SC().scrollTop=0;}}
 function renderTabs(){
   const n=upcomingAlert().length;
-  const tabs=[['week','Tydzień','week'],['tasks','Zadania','tasks'],['plan','Plan','plan'],['study','Nauka','study'],['settings','Ustawienia','gear']];
+  const tabs=[['week','Tydzień','week'],['tasks','Zadania','tasks'],['plan','Plan','plan'],['settings','Ustawienia','gear']];
   $('#tabs').replaceChildren(...tabs.map(([k,l,i])=>h('button',{class:S.tab===k?'on':'',onclick:()=>go(k)},svg(IC[i]),l,
-    k==='tasks'&&n?h('span',{class:'dot'},n):null,k==='study'&&S.timer?h('span',{class:'dot run'}):null)));
+    k==='tasks'&&n?h('span',{class:'dot'},n):null)));
 }
 function weekNav(off,onChange,sub){
   const m=weekStart(off);
@@ -677,11 +709,11 @@ function taskRow(t){
   }},svg(IC.check));
   let dueEl=null;
   if(t.due){const cls=!t.done&&t.due<td?'due-over':!t.done&&dayDiff(t.due)<=1?'due-soon':'';dueEl=h('span',{class:cls},`termin: ${relDue(t.due)}${t.time?' '+fmtT(t.time):''}`);}
-  const up=(t.sessions||[]).filter(s=>s.date>=td&&!s.done).map(s=>s.date).sort();
+  const up=(t.sessions||[]).filter(s=>s.date>=td&&!s.done).sort((a,b)=>a.date.localeCompare(b.date)||(a.time||'').localeCompare(b.time||''));
   return h('div',{class:'row task tap'+(t.done?' done':''),onclick:()=>editTask(t)},chk,
     h('div',{class:'bd'},h('div',{class:'ttl'},taskName(t)),
       h('div',{class:'sub'},h('span',{class:'tpill',style:`background:${ty.color}`},ty.label),t.subject?h('span',{},t.subject):null,dueEl,
-        !t.done&&up.length?h('span',{},`· praca: ${up.slice(0,3).map(x=>DSHORT[dowOf(x)]+' '+parseD(x).getDate()).join(', ')}${up.length>3?'…':''}`):null,
+        !t.done&&up.length?h('span',{},`· praca: ${up.slice(0,3).map(x=>DSHORT[dowOf(x.date)]+' '+parseD(x.date).getDate()+(x.time?' '+fmtT(x.time):'')).join(', ')}${up.length>3?'…':''}`):null,
         t.files&&t.files.length?h('span',{class:'att-count',style:'margin:0'},svg(IC.clip),t.files.length):null)),
     isDeadline(t)?svg(IC.bell,`class="bell${t.calAdded?' on':''}"`):null);
 }
@@ -689,17 +721,11 @@ function sessionRow(t,s){
   const ty=TYPES[t.type]||TYPES.todo;
   const all=(t.sessions||[]).slice().sort((a,b)=>a.date.localeCompare(b.date));
   const idx=all.indexOf(s)+1;
-  const chk=h('button',{class:'check'+(s.done?' on':''),'aria-label':'Zrobione',onclick:async e=>{
-    e.stopPropagation();s.done=!s.done;
-    if(t.type==='todo'){t.done=s.done;t.doneAt=s.done?Date.now():null;}
-    await saveTask(t);chk.classList.toggle('on',s.done);
-    if(s.done&&t.type!=='todo'&&!t.done&&all.every(x=>x.done))
-      toast('Wszystkie sesje zrobione',{label:'Oznacz zadanie',fn:async()=>{t.done=true;t.doneAt=Date.now();await saveTask(t);render();}});
-    setTimeout(()=>{S._keepToast=true;render();},350);
-  }},svg(IC.check));
-  return h('div',{class:'row task tap'+(s.done?' done':''),onclick:()=>editTask(t)},chk,
+  const chk=h('button',{class:'check'+(s.done?' on':''),'aria-label':'Zrobione',onclick:async e=>{e.stopPropagation();chk.classList.toggle('on',!s.done);setTimeout(()=>toggleSession(t,s),250);}},svg(IC.check));
+  return h('div',{class:'row task tap'+(s.done?' done':''),onclick:()=>editSession(t,s)},chk,
     h('div',{class:'bd'},h('div',{class:'ttl'},taskName(t)),
-      h('div',{class:'sub'},h('span',{class:'tpill',style:`background:${ty.color}`},ty.label),t.subject?h('span',{},t.subject):null,
+      h('div',{class:'sub'},s.time?h('span',{style:'color:var(--text);font-weight:600'},`${fmtT(s.time)}–${fmtT(addMin(s.time,s.dur||60))}`):h('span',{style:'color:var(--accent)'},'＋ godzina'),
+        h('span',{class:'tpill',style:`background:${ty.color}`},ty.label),t.subject?h('span',{},t.subject):null,
         t.due?h('span',{class:!t.done&&t.due<todayISO()?'due-over':''},`termin: ${relDue(t.due)}`):null,
         all.length>1?h('span',{},`· sesja ${idx}/${all.length}`):null,t.done&&t.type!=='todo'?h('span',{style:'color:var(--ok)'},'✓ oddane'):null)));
 }
@@ -794,7 +820,11 @@ function dayPicker(t,onChange){
     for(const ds of dates){const d=parseD(ds);
       grid.append(h('button',{class:'dchip'+(sel.has(ds)?' on':'')+(ds===t.due?' due':''),onclick:()=>{sel.has(ds)?sel.delete(ds):sel.add(ds);set([...sel]);}},
         DSHORT[dowOf(ds)],h('b',{},d.getDate()),ds===t.due?'termin':(d.getDate()===1||ds===dates[0]?MON[d.getMonth()]:'')));}
-    wrap.replaceChildren(quick,grid,h('div',{class:'hint'},sel.size?`Praca zaplanowana na: ${[...sel].sort().map(dshort).join(', ')}. Pojawi się w zakładce Plan.`:'Zaznacz dni, w które chcesz nad tym usiąść. Pojawią się w zakładce Plan.'));
+    const times=(t.sessions||[]).length?h('div',{class:'strows'},h('div',{class:'hint',style:'margin:0 0 4px'},'Godzina pracy (opcjonalnie):'),
+      t.sessions.map(se=>h('div',{class:'strow'},h('span',{},dshort(se.date)),
+        h('input',{class:'inp',type:'time',value:se.time||'',onchange:e=>{se.time=e.target.value;if(se.time&&!se.dur)se.dur=60;t._touched=true;}}),
+        durSelect(se.dur||60,v=>{se.dur=v;t._touched=true;})))):null;
+    wrap.replaceChildren(quick,grid,h('div',{class:'hint'},sel.size?'Praca pojawi się w zakładce Plan (widok godzinowy, gdy ustawisz godzinę).':'Zaznacz dni, w które chcesz nad tym usiąść. Pojawią się w zakładce Plan.'),times);
   }
   draw();wrap.redraw=draw;return wrap;
 }
@@ -856,7 +886,6 @@ function editTask(t,prefill={}){
   drawRem();
   body.append(field('Przypomnienie',rem));
   body.append(h('div',{class:'field'},switchRow('Zrobione',d.done,v=>{d.done=v;d.doneAt=v?Date.now():null;})));
-  if(d.studyMin)body.append(h('div',{class:'hint center'},`Czas nauki nad tym zadaniem: ${fmtMin(d.studyMin)}`));
   if(!isNew)body.append(h('div',{class:'field'},h('button',{class:'bigbtn danger',onclick:async()=>{if(confirm('Usunąć to zadanie?')){await deleteTask(t);committed=true;s.close();render();toast('Usunięto');}}},'Usuń zadanie')));
   let committed=false;
   async function commit(){
@@ -920,8 +949,18 @@ function addToCalendar(tasks,after){
 }
 
 /* ---- PLAN ---- */
+const PLAN_START=7,PLAN_END=22,HOUR_PX=60,TL_LEFT=46;
+const DURS=[15,30,45,60,90,120,150,180,240];
+const durLabel=m=>m<60?`${m} min`:m%60?`${Math.floor(m/60)} h ${m%60} min`:`${m/60} h`;
+const weekOffOf=ds=>Math.round((monday(parseD(ds))-monday(new Date()))/(7*864e5));
+function durSelect(val,onchange){
+  const sel=h('select',{class:'inp',onchange:e=>onchange(+e.target.value)},DURS.map(m=>h('option',{value:m},durLabel(m))));
+  sel.value=String(val||60);return sel;
+}
 function renderPlan(hdr,view){
-  hdr.append(h('div',{class:'hdr-top'},h('h1',{},'Plan pracy'),S.planView==='week'&&S.planOff!==1?h('button',{class:'pillbtn',onclick:()=>{S.planOff=1;render();}},'Nast. tydzień'):null),
+  {const wd=weekDates(S.planOff);if(!S.planDay||!wd.includes(S.planDay))S.planDay=wd.includes(todayISO())?todayISO():wd[0];}
+  hdr.append(h('div',{class:'hdr-top'},h('h1',{},'Plan pracy'),
+      S.planView==='week'&&(S.planOff!==0||S.planDay!==todayISO())?h('button',{class:'pillbtn',onclick:()=>{S.planOff=0;S.planDay=todayISO();render();SC().scrollTop=0;}},'Dziś'):null),
     seg([['week','Tydzień'],['month','Miesiąc']],S.planView,k=>{S.planView=k;render();SC().scrollTop=0;}));
   const todo=needsPlanning();
   const toPlanCard=()=>todo.length?[h('div',{class:'sec'},h('span',{},'Do zaplanowania'),h('span',{},todo.length)),
@@ -934,188 +973,163 @@ function renderPlan(hdr,view){
     S.planSel=monthSel(S.planMonthOff,S.planSel);
     view.append(monthView(S.planMonthOff,S.planSel,ds=>{
         const out=[];const dl=S.tasks.filter(t=>isDeadline(t)&&!t.done&&t.due===ds);if(dl.length)out.push('var(--danger)');
-        const ss=sessionsOn(ds);if(ss.length)out.push(ss.every(([,s])=>s.done)?'var(--fill)':'var(--ok)');if(ss.length>1)out.push(ss.every(([,s])=>s.done)?'var(--fill)':'var(--ok)');return out;},
+        const ss=sessionsOn(ds);const c=ss.every(([,s])=>s.done)?'var(--fill)':'var(--ok)';if(ss.length)out.push(c);if(ss.length>1)out.push(c);return out;},
       ds=>{S.planSel=ds;render();},o=>{S.planMonthOff=o;S.planSel=null;render();},
       h('div',{class:'legend'},h('span',{},h('i',{style:'background:var(--danger)'}),'termin'),h('span',{},h('i',{style:'background:var(--ok)'}),'zaplanowana praca'))));
-    view.append(planDayCard(S.planSel,dowOf(S.planSel),true));
+    view.append(planDayCard(S.planSel));
     const tp=toPlanCard();if(tp)view.append(...tp);
-    fab(()=>editTask(null,{type:'todo',sessions:[{id:uid(),date:S.planSel,done:false}]}));
+    fab(()=>openSlot(S.planSel,null));
     return;
   }
-  hdr.append(weekNav(S.planOff,o=>{S.planOff=o;render();SC().scrollTop=0;},weekSub));
   const dates=weekDates(S.planOff);
+  if(!S.planDay||!dates.includes(S.planDay))S.planDay=dates.includes(todayISO())?todayISO():dates[0];
+  hdr.append(weekNav(S.planOff,o=>{S.planOff=o;S.planDay=null;render();SC().scrollTop=0;},weekSub),dayStrip(dates));
   const ss=dates.flatMap(sessionsOn);
   const done=ss.filter(([,s])=>s.done).length;
   view.append(h('div',{class:'card mt',style:'padding:12px 14px'},
     h('div',{style:'display:flex;justify-content:space-between'},h('b',{},'Postęp tygodnia'),h('span',{class:'muted'},`${done} / ${ss.length}`)),
     h('div',{class:'progress'},h('div',{style:`width:${ss.length?Math.round(done/ss.length*100):0}%`}))));
+  view.append(dayTimeline(S.planDay));
   const tp=toPlanCard();if(tp)view.append(...tp);
-  const grid=h('div',{class:'daygrid'});
-  dates.forEach((ds,i)=>grid.append(planDayCard(ds,i,false)));
-  view.append(grid);
-  view.append(h('div',{class:'hint center',style:'margin-top:14px'},'Zadania z zakładek Tydzień i Zadania trafiają tu automatycznie — z terminem i pracą zaplanowaną na dzień przed. Stuknij zadanie, aby zmienić dni pracy.'));
-  fab(()=>editTask(null,{type:'todo',sessions:[{id:uid(),date:dates[0]>=todayISO()?dates[0]:todayISO(),done:false}]}));
+  view.append(h('div',{class:'hint center',style:'margin-top:14px'},'Stuknij godzinę na osi, aby coś zaplanować. Stuknij zaplanowaną pracę, aby zmienić godzinę, czas trwania lub dzień.'));
+  fab(()=>openSlot(S.planDay,null));
+  if(S.planDay===todayISO()&&!S._planScrolled)requestAnimationFrame(()=>{S._planScrolled=true;const n=$('.tl-now');if(n){const y=n.getBoundingClientRect().top-SC().getBoundingClientRect().top+SC().scrollTop-180;if(y>0)SC().scrollTo({top:y});}});
 }
-function planDayCard(ds,i,single){
+function dayStrip(dates){
+  const td=todayISO();
+  return h('div',{class:'daystrip'},dates.map(ds=>{
+    const n=sessionsOn(ds).filter(([,s])=>!s.done).length;
+    const dl=S.tasks.some(t=>isDeadline(t)&&!t.done&&t.due===ds);
+    return h('button',{class:'dsb'+(ds===S.planDay?' sel':'')+(ds===td?' today':''),onclick:()=>{S.planDay=ds;render();SC().scrollTop=0;}},
+      DSHORT[dowOf(ds)],h('b',{},parseD(ds).getDate()),
+      h('span',{class:'dots'},dl?h('i',{style:'background:var(--danger)'}):null,n?h('i',{style:'background:var(--ok)'}):null,n>1?h('i',{style:'background:var(--ok)'}):null));
+  }));
+}
+function layoutBlocks(blocks){
+  let cluster=[],end=-1;
+  const flush=()=>{const lanes=[];for(const b of cluster){let l=lanes.findIndex(e=>e<=b.s);if(l<0){l=lanes.length;lanes.push(0);}lanes[l]=b.e;b.lane=l;}cluster.forEach(b=>b.n=lanes.length);cluster=[];};
+  for(const b of blocks){if(cluster.length&&b.s>=end){flush();end=-1;}cluster.push(b);end=Math.max(end,b.e);}
+  if(cluster.length)flush();
+}
+function dayTimeline(ds){
+  const td=todayISO();
   const items=sessionsOn(ds);
+  const timed=items.filter(([,s])=>s.time),untimed=items.filter(([,s])=>!s.time);
   const deadlines=S.tasks.filter(t=>isDeadline(t)&&t.due===ds&&!t.done);
-  const cls=classesOn(i);
-  const d=parseD(ds);
-  const card=h('div',{class:'card daycard'+(ds===todayISO()?' today':'')},
-    h('div',{class:'dayhead'},h('b',{},single?dlong(ds):DAYS[i],ds===todayISO()?h('span',{class:'badge'},'dziś'):null),h('span',{class:'dd'},single?(cls.length?`${cls.length} zaj.`:''):`${d.getDate()} ${MON[d.getMonth()]}`+(cls.length?` · ${cls.length} zaj.`:''))));
-  if(deadlines.length)card.append(h('div',{class:'deadline'},'Termin:',deadlines.map(t=>h('button',{class:'dl',onclick:()=>editTask(t)},h('i',{style:`background:${TYPES[t.type].color}`}),`${TYPES[t.type].label}${t.subject?' – '+t.subject:''}`))));
-  items.forEach(([t,s])=>card.append(sessionRow(t,s)));
-  if(!items.length&&!deadlines.length&&single)card.append(h('div',{class:'empty-note'},'Nic nie zaplanowano.'));
-  const inp=h('input',{placeholder:'Dodaj na ten dzień…',enterkeyhint:'done'});
+  const cls=classesOn(dowOf(ds));
+  const card=h('div',{class:'card daycard'+(ds===td?' today':'')},
+    h('div',{class:'dayhead'},h('b',{},dlong(ds),ds===td?h('span',{class:'badge'},'dziś'):null),h('span',{class:'dd'},cls.length?`${cls.length} zaj.`:'')));
+  if(deadlines.length)card.append(h('div',{class:'deadline'},'Termin:',deadlines.map(t=>h('button',{class:'dl',onclick:()=>editTask(t)},h('i',{style:`background:${TYPES[t.type].color}`}),`${TYPES[t.type].label}${t.subject?' – '+t.subject:''}${t.time?' '+fmtT(t.time):''}`))));
+  if(untimed.length){card.append(h('div',{class:'subhd'},'Bez godziny'));untimed.forEach(([t,s])=>card.append(sessionRow(t,s)));}
+  const blocks=[...cls.map(c=>({kind:'cls',s:tmin(c.start),e:tmin(c.end),c})),...timed.map(([t,s])=>({kind:'ses',s:tmin(s.time),e:tmin(s.time)+(s.dur||60),t,ses:s}))].sort((a,b)=>a.s-b.s||b.e-a.e);
+  let start=PLAN_START,end=PLAN_END;
+  for(const b of blocks){start=Math.min(start,Math.floor(b.s/60));end=Math.max(end,Math.ceil(b.e/60));}
+  end=Math.min(24,end);
+  layoutBlocks(blocks);
+  const tl=h('div',{class:'tl',style:`height:${(end-start)*HOUR_PX}px`});
+  for(let hr=start;hr<=end;hr++){tl.append(h('div',{class:'tl-h',style:`top:${(hr-start)*HOUR_PX}px`},hr<end?h('span',{},`${hr}:00`):null));
+    if(hr<end)tl.append(h('div',{class:'tl-h half',style:`top:${(hr-start)*HOUR_PX+HOUR_PX/2}px`}));}
+  tl.addEventListener('click',e=>{
+    if(e.target.closest('.tl-b'))return;
+    const r=tl.getBoundingClientRect();const y=e.clientY-r.top;
+    const m=Math.min(end*60-30,start*60+Math.floor(y/(HOUR_PX/2))*30);
+    openSlot(ds,`${pad(Math.floor(m/60))}:${pad(m%60)}`);
+  });
+  for(const b of blocks){
+    const top=(b.s-start*60)/60*HOUR_PX,hgt=Math.max(24,(b.e-b.s)/60*HOUR_PX-3);
+    const pos=`top:${top+1}px;height:${hgt}px;left:calc(${TL_LEFT}px + (100% - ${TL_LEFT+2}px) * ${b.lane} / ${b.n});width:calc((100% - ${TL_LEFT+2}px) / ${b.n} - 3px);`;
+    const short=hgt<40;
+    if(b.kind==='cls'){
+      const k=KINDS[b.c.kind]||KINDS.W;
+      tl.append(h('button',{class:'tl-b cls',style:pos+`border-left-color:${k.color}`,onclick:()=>openNote(ds,b.c)},
+        h('b',{},b.c.name),short?null:h('span',{},`${KINDS[b.c.kind].short} · ${fmtT(b.c.start)}–${fmtT(b.c.end)}${b.c.room?' · '+b.c.room:''}`)));
+    }else{
+      const ty=TYPES[b.t.type]||TYPES.todo;
+      const ck=h('span',{class:'ck'+(b.ses.done?' on':''),onclick:async e=>{e.stopPropagation();await toggleSession(b.t,b.ses);}},svg(IC.check));
+      tl.append(h('div',{class:'tl-b ses'+(b.ses.done?' done':''),style:pos+`border-left-color:${ty.color};background:${ty.color}2b`,onclick:()=>editSession(b.t,b.ses)},
+        ck,h('b',{},taskName(b.t)),short?null:h('span',{},`${fmtT(b.ses.time)}–${fmtT(addMin(b.ses.time,b.ses.dur||60))}${b.t.subject?' · '+b.t.subject:''}`)));
+    }
+  }
+  if(ds===td){const now=new Date(),m=now.getHours()*60+now.getMinutes();if(m>=start*60&&m<=end*60)tl.append(h('div',{class:'tl-now',style:`top:${(m-start*60)/60*HOUR_PX}px`}));}
+  card.append(h('div',{class:'tl-wrap'},tl));
+  card.append(quickAdd(ds));
+  return card;
+}
+function quickAdd(ds){
+  const inp=h('input',{placeholder:'Dodaj na ten dzień (bez godziny)…',enterkeyhint:'done'});
   const add=async()=>{const v=inp.value.trim();if(!v)return;await saveTask({id:uid(),type:'todo',title:v,subject:'',due:'',time:'',done:false,desc:'',files:[],sessions:[{id:uid(),date:ds,done:false}],calAdded:false,created:Date.now()});render();};
   inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();add();}});
-  card.append(h('div',{class:'quickadd'},inp,h('button',{onclick:add},'Dodaj')));
+  return h('div',{class:'quickadd'},inp,h('button',{onclick:add},'Dodaj'));
+}
+function planDayCard(ds){
+  const items=sessionsOn(ds);
+  const deadlines=S.tasks.filter(t=>isDeadline(t)&&t.due===ds&&!t.done);
+  const cls=classesOn(dowOf(ds));
+  const card=h('div',{class:'card daycard'+(ds===todayISO()?' today':'')},
+    h('div',{class:'dayhead'},h('b',{},dlong(ds),ds===todayISO()?h('span',{class:'badge'},'dziś'):null),
+      h('button',{class:'smallbtn',onclick:()=>{S.planView='week';S.planOff=weekOffOf(ds);S.planDay=ds;render();SC().scrollTop=0;}},'Plan godzinowy')));
+  if(deadlines.length)card.append(h('div',{class:'deadline'},'Termin:',deadlines.map(t=>h('button',{class:'dl',onclick:()=>editTask(t)},h('i',{style:`background:${TYPES[t.type].color}`}),`${TYPES[t.type].label}${t.subject?' – '+t.subject:''}`))));
+  items.forEach(([t,s])=>card.append(sessionRow(t,s)));
+  if(!items.length&&!deadlines.length)card.append(h('div',{class:'empty-note'},cls.length?`${cls.length} zaj. · nic nie zaplanowano`:'Nic nie zaplanowano.'));
+  card.append(quickAdd(ds));
   return card;
 }
-
-/* ---- STUDY (pomodoro) ---- */
-let audioCtx=null;
-function unlockAudio(){try{audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume();}catch(e){}}
-function beep(){try{if(!audioCtx)return;const t0=audioCtx.currentTime;for(let i=0;i<3;i++){const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.frequency.value=880;o.connect(g);g.connect(audioCtx.destination);g.gain.setValueAtTime(.0001,t0+i*.35);g.gain.exponentialRampToValueAtTime(.3,t0+i*.35+.02);g.gain.exponentialRampToValueAtTime(.0001,t0+i*.35+.25);o.start(t0+i*.35);o.stop(t0+i*.35+.3);}}catch(e){}}
-function runShortcut(name,text){
-  const u=`shortcuts://run-shortcut?name=${encodeURIComponent(name)}`+(text?`&input=text&text=${encodeURIComponent(text)}`:'');
-  location.href=u;
+async function toggleSession(t,s){
+  s.done=!s.done;
+  if(t.type==='todo'){t.done=s.done;t.doneAt=s.done?Date.now():null;}
+  await saveTask(t);
+  const all=t.sessions||[];
+  if(s.done&&t.type!=='todo'&&!t.done&&all.every(x=>x.done))
+    toast('Wszystkie sesje zrobione',{label:'Oznacz zadanie',fn:async()=>{t.done=true;t.doneAt=Date.now();await saveTask(t);render();}});
+  S._keepToast=true;render();
 }
-function pickLabel(p){if(!p)return'Nauka ogólna';if(p.startsWith('t:')){const t=S.tasks.find(x=>x.id===p.slice(2));return t?`${taskName(t)}${t.subject?' · '+t.subject:''}`:'Zadanie';}return p.slice(2);}
-async function logStudy(min){
-  const T=S.timer;if(!T||min<1)return;
-  const p=T.pick||'';const task=p.startsWith('t:')?S.tasks.find(x=>x.id===p.slice(2)):null;
-  const subject=task?task.subject||taskName(task):p.startsWith('s:')?p.slice(2):'Ogólna';
-  S.study.push({date:todayISO(),min,subject,taskId:task?task.id:null,at:Date.now()});
-  await dbPut('kv',S.study,'study');
-  if(task){task.studyMin=(task.studyMin||0)+min;await saveTask(task);}
+function openSlot(ds,time){
+  if(!time){const n=new Date();time=ds===todayISO()?`${pad(Math.min(23,n.getHours()+1))}:00`:'16:00';}
+  const st={date:ds,time,dur:60};
+  const timeInp=h('input',{class:'inp',type:'time',value:st.time,onchange:e=>{st.time=e.target.value;}});
+  const dateInp=h('input',{class:'inp',type:'date',value:st.date,onchange:e=>{if(e.target.value)st.date=e.target.value;}});
+  const newInp=h('input',{class:'inp',placeholder:'np. Powtórzyć wykład z prawa',enterkeyhint:'done'});
+  let s;
+  const done=()=>{s.close();render();toast(`Zaplanowano: ${dshort(st.date)}${st.time?' '+fmtT(st.time):''}`);};
+  const addNew=async()=>{const v=newInp.value.trim();if(!v){newInp.focus();return;}
+    await saveTask({id:uid(),type:'todo',title:v,subject:'',due:'',time:'',done:false,desc:'',files:[],sessions:[{id:uid(),date:st.date,time:st.time,dur:st.dur,done:false}],calAdded:false,created:Date.now()});done();};
+  newInp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();addNew();}});
+  const pickRow=(t,sub,fn)=>h('div',{class:'row task tap',onclick:fn},
+    h('div',{class:'bd'},h('div',{class:'ttl'},taskName(t)),h('div',{class:'sub'},h('span',{class:'tpill',style:`background:${TYPES[t.type].color}`},TYPES[t.type].label),t.subject?h('span',{},t.subject):null,sub)),
+    svg(IC.plus,'class="chev" width="18" height="18" style="opacity:1;color:var(--accent)"'));
+  const untimed=sessionsOn(ds).filter(([,x])=>!x.time&&!x.done);
+  const others=sortTasks(openTasks().filter(t=>t.type!=='todo'&&!(t.sessions||[]).some(x=>x.date===ds)));
+  const body=h('div',{},
+    field('Kiedy',h('div',{class:'inrow'},dateInp,h('div',{style:'flex:.62'},timeInp))),
+    field('Na jak długo',durSelect(st.dur,v=>{st.dur=v;})),
+    field('Nowa rzecz do zrobienia',h('div',{class:'inrow'},newInp,h('button',{class:'bigbtn',style:'flex:none;width:auto;padding:11px 16px',onclick:addNew},'Dodaj'))),
+    untimed.length?field('Zaplanowane na ten dzień — bez godziny',h('div',{class:'card'},untimed.map(([t,x])=>pickRow(t,t.due?h('span',{},'termin: '+relDue(t.due)):null,async()=>{x.date=st.date;x.time=st.time;x.dur=st.dur;await saveTask(t);done();})))):null,
+    others.length?field('Popracuj nad zadaniem',h('div',{class:'card'},others.map(t=>pickRow(t,t.due?h('span',{class:dayDiff(t.due)<=1?'due-soon':''},'termin: '+relDue(t.due)):null,async()=>{t.sessions=[...(t.sessions||[]),{id:uid(),date:st.date,time:st.time,dur:st.dur,done:false}].sort((a,b)=>a.date.localeCompare(b.date));await saveTask(t);done();})))):null,
+    h('div',{class:'hint center',style:'margin-top:14px'},'Wybierz zadanie z listy albo wpisz nową rzecz — zostanie zaplanowana na wybraną godzinę.'));
+  s=sheet({title:'Zaplanuj',sub:`${dlong(ds)}`,body,full:true,left:'Anuluj'});
 }
-function startStudy(){
-  unlockAudio();
-  const go=dnd=>{
-    const st=S.settings,now=Date.now();
-    S.timer={phase:'work',cycle:1,cycles:st.studyCycles,work:st.studyWork,brk:st.studyBreak,phaseStart:now,endsAt:now+st.studyWork*6e4,pick:S.studyPick,dnd,ended:false};
-    saveTimer();render();
-    if(st.shortcuts)runShortcut(SC_TIMER,`${st.studyWork}${dnd?' cisza':''}`);
-    else toast('Minutnik działa w aplikacji — skonfiguruj Skróty, by dzwonił też przy zablokowanym telefonie');
-  };
-  if(S.settings.shortcuts)actionSheet('Włączyć tryb „Nie przeszkadzać” na czas nauki?\nMinutnik zadzwoni na koniec nauki i przerwy także w trybie Nie przeszkadzać.',[
-    {label:'Tak, włącz „Nie przeszkadzać”',fn:()=>go(true)},{label:'Nie, bez zmian',fn:()=>go(false)}]);
-  else go(false);
-}
-async function phaseEnd(){
-  const T=S.timer;if(!T||T.ended)return;
-  T.ended=true;
-  if(T.phase==='work')await logStudy(Math.round((Math.min(Date.now(),T.endsAt)-T.phaseStart)/6e4));
-  await saveTimer();beep();
-  if(S.tab==='study'&&!document.querySelector('.ov'))render();
-  else{renderTabs();toast(T.phase==='work'?'Koniec nauki — czas na przerwę':'Koniec przerwy',{label:'Otwórz',fn:()=>go('study')});}
-}
-function nextPhase(kind){
-  unlockAudio();
-  const T=S.timer,now=Date.now();
-  if(kind==='break'){T.phase='break';T.endsAt=now+T.brk*6e4;}
-  else{T.phase='work';T.cycle++;if(T.cycle>T.cycles)T.cycles=T.cycle;T.endsAt=now+T.work*6e4;}
-  T.phaseStart=now;T.ended=false;saveTimer();render();
-  if(S.settings.shortcuts)runShortcut(SC_TIMER,String(kind==='break'?T.brk:T.work));
-}
-async function finishStudy(){
-  const T=S.timer;if(!T)return;
-  if(T.phase==='work'&&!T.ended)await logStudy(Math.round((Date.now()-T.phaseStart)/6e4));
-  const p=T.pick||'';const task=p.startsWith('t:')?S.tasks.find(x=>x.id===p.slice(2)):null;
-  S.timer=null;await saveTimer();
-  if(task){const s=(task.sessions||[]).find(x=>x.date===todayISO()&&!x.done);
-    if(s&&confirm(`Oznaczyć dzisiejszą sesję pracy „${taskName(task)}” jako zrobioną?`)){s.done=true;await saveTask(task);}}
-  render();toast('Koniec nauki 👏');
-  if(T.dnd&&S.settings.shortcuts)runShortcut(SC_END,'');
-}
-function renderStudy(hdr,view){
-  hdr.append(h('div',{class:'hdr-top'},h('h1',{},'Nauka')));
-  const T=S.timer;
-  if(T){
-    const isWork=T.phase==='work';
-    const card=h('div',{class:'card mt timer'});
-    const C=2*Math.PI*108;
-    const ring=h('div',{class:'ring',html:`<svg viewBox="0 0 240 240"><circle cx="120" cy="120" r="108" fill="none" stroke="var(--fill)" stroke-width="12"/><circle id="ringFg" cx="120" cy="120" r="108" fill="none" stroke="${isWork?'var(--accent)':'var(--ok)'}" stroke-width="12" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="0"/></svg>`});
-    ring.append(h('div',{class:'in'},h('div',{class:'ph',style:`color:${isWork?'var(--accent)':'var(--ok)'}`},T.ended?(isWork?'Koniec nauki':'Koniec przerwy'):(isWork?`Nauka ${T.cycle}/${T.cycles}`:'Przerwa')),
-      h('div',{class:'tt',id:'tTime'},'--:--'),h('div',{class:'sj'},pickLabel(T.pick))));
-    card.append(ring);
-    card.append(h('div',{class:'cycdots'},[...Array(T.cycles)].map((_,i)=>h('i',{class:i+1<T.cycle||(i+1===T.cycle&&(T.phase==='break'||T.ended))?'done':i+1===T.cycle?'cur':''}))));
-    if(T.dnd)card.append(h('div',{class:'hint',style:'display:flex;gap:6px;align-items:center'},svg(IC.moon,'width="14" height="14"'),'Tryb „Nie przeszkadzać” włączony'));
-    if(T.ended){
-      if(isWork&&T.cycle<T.cycles)card.append(h('div',{class:'btnrow'},h('button',{class:'bigbtn green',onclick:()=>nextPhase('break')},svg(IC.play),`Przerwa ${T.brk} min`)));
-      else if(isWork)card.append(h('div',{class:'btnrow'},h('button',{class:'bigbtn',onclick:()=>nextPhase('work')},'Jeszcze jedna sesja')));
-      else card.append(h('div',{class:'btnrow'},h('button',{class:'bigbtn',onclick:()=>nextPhase('work')},svg(IC.play),`Nauka ${T.work} min (sesja ${T.cycle+1})`)));
-      card.append(h('div',{class:'btnrow'},h('button',{class:'bigbtn sec2',onclick:finishStudy},'Zakończ naukę')));
-    }else{
-      card.append(h('div',{class:'btnrow'},h('button',{class:'bigbtn sec2',onclick:()=>{if(confirm(isWork?'Zakończyć tę sesję nauki wcześniej?':'Pominąć przerwę?')){T.endsAt=Date.now();phaseEnd();}}},isWork?'Zakończ sesję':'Pomiń przerwę'),
-        h('button',{class:'bigbtn danger',onclick:()=>{if(confirm('Zakończyć całą naukę?'))finishStudy();}},'Zakończ')));
-      if(S.settings.shortcuts)card.append(h('div',{class:'hint center',style:'margin-top:10px'},'Minutnik w aplikacji Zegar zadzwoni na koniec — możesz zablokować telefon. Jeśli zakończysz wcześniej, wyłącz minutnik w Zegarze.'));
-      else card.append(h('div',{class:'hint center',style:'margin-top:10px'},'Bez Skrótów sygnał zabrzmi tylko przy otwartej aplikacji.'));
-    }
-    view.append(card);
-    updateTimerUI();
-  }else{
-    const st=S.settings;
-    view.append(h('div',{class:'sec'},'Tryb'),h('div',{class:'modes'},
-      [[25,'25 + 5','25 min nauki, 5 min przerwy'],[30,'30 + 5','30 min nauki, 5 min przerwy']].map(([w,l,dsc])=>h('button',{class:'mode'+(st.studyWork===w?' on':''),onclick:async()=>{st.studyWork=w;st.studyBreak=5;await saveSettings();render();}},h('b',{},l),h('span',{},dsc)))));
-    view.append(h('div',{class:'card mt',style:'padding:12px 14px;display:flex;align-items:center;justify-content:space-between'},
-      h('div',{},h('b',{},'Liczba sesji'),h('div',{class:'muted',style:'font-size:13px'},`łącznie ok. ${fmtMin(st.studyCycles*st.studyWork+(st.studyCycles-1)*st.studyBreak)}`)),
-      h('div',{class:'stepper'},h('button',{onclick:async()=>{st.studyCycles=Math.max(1,st.studyCycles-1);await saveSettings();render();}},'−'),h('b',{},st.studyCycles),h('button',{onclick:async()=>{st.studyCycles=Math.min(8,st.studyCycles+1);await saveSettings();render();}},'+'))));
-    const todaySess=sessionsOn(todayISO()).filter(([t,s])=>!s.done);
-    const sel=h('select',{class:'inp',onchange:e=>{S.studyPick=e.target.value;}},
-      h('option',{value:''},'Nauka ogólna'),
-      todaySess.length?h('optgroup',{label:'Zaplanowane na dziś'},todaySess.map(([t])=>h('option',{value:'t:'+t.id},`${taskName(t)}${t.subject?' · '+t.subject:''}`))):null,
-      h('optgroup',{label:'Przedmioty'},subjects().map(s=>h('option',{value:'s:'+s},s))),
-      h('optgroup',{label:'Zadania'},sortTasks(openTasks().filter(t=>t.type!=='todo')).map(t=>h('option',{value:'t:'+t.id},`${taskName(t)}${t.subject?' · '+t.subject:''}`))));
-    if(!S.studyPick&&todaySess.length)S.studyPick='t:'+todaySess[0][0].id;
-    sel.value=S.studyPick;
-    view.append(field('Czego się uczysz?',sel));
-    view.append(h('div',{class:'mt'},h('button',{class:'bigbtn',style:'padding:16px;font-size:18px',onclick:startStudy},svg(IC.play),'Rozpocznij naukę')));
-  }
-  // stats
-  const td=todayISO(),ws=iso(monday(new Date()));
-  const dayMin=S.study.filter(x=>x.date===td).reduce((a,x)=>a+x.min,0);
-  const wk=S.study.filter(x=>x.date>=ws);const wkMin=wk.reduce((a,x)=>a+x.min,0);
-  view.append(h('div',{class:'sec'},'Statystyki'),h('div',{class:'stats'},
-    h('div',{class:'stat'},h('b',{},fmtMin(dayMin)),h('span',{},'dziś')),h('div',{class:'stat'},h('b',{},fmtMin(wkMin)),h('span',{},'ten tydzień'))));
-  const bySub={};wk.forEach(x=>{bySub[x.subject]=(bySub[x.subject]||0)+x.min;});
-  const rows=Object.entries(bySub).sort((a,b)=>b[1]-a[1]);
-  if(rows.length){const mx=rows[0][1];view.append(h('div',{class:'card mt',style:'padding:6px 0'},rows.map(([n,m])=>h('div',{class:'sbar'},h('span',{class:'nm'},n),h('span',{class:'tr'},h('div',{style:`width:${Math.round(m/mx*100)}%`})),h('span',{class:'mn'},fmtMin(m))))));}
-  view.append(shortcutsCard());
-}
-function updateTimerUI(){
-  const T=S.timer;const el=$('#tTime');if(!T||!el)return;
-  const rem=T.ended?0:Math.max(0,T.endsAt-Date.now());
-  const s=Math.ceil(rem/1000);el.textContent=`${pad(Math.floor(s/60))}:${pad(s%60)}`;
-  const fg=$('#ringFg');if(fg){const C=2*Math.PI*108,tot=T.endsAt-T.phaseStart;fg.setAttribute('stroke-dashoffset',String(C*(1-(tot?rem/tot:0))));}
-}
-setInterval(()=>{const T=S.timer;if(!T||T.ended)return;if(Date.now()>=T.endsAt){phaseEnd();return;}if(S.tab==='study')updateTimerUI();},500);
-function shortcutsCard(){
-  const st=S.settings;
-  const open=!st.shortcuts||S._guideOpen;
-  const card=h('div',{class:'card mt'});
-  card.append(h('div',{class:'row',style:'align-items:center'},h('div',{style:'flex:1'},h('b',{},'Minutnik i „Nie przeszkadzać”'),
-    h('div',{class:'muted',style:'font-size:13px;margin-top:2px'},st.shortcuts?'Skonfigurowane — korzystam ze Skrótów iOS':'Wymaga jednorazowej konfiguracji w aplikacji Skróty (ok. 3 min)')),
-    st.shortcuts?h('button',{class:'smallbtn',onclick:()=>{S._guideOpen=!S._guideOpen;render();}},S._guideOpen?'Ukryj':'Instrukcja'):null));
-  if(open)card.append(h('div',{class:'guide'},
-    h('p',{style:'margin:0 0 6px'},'iOS nie pozwala aplikacjom z ekranu początkowego samodzielnie włączać „Nie przeszkadzać” ani budzić przy zablokowanym ekranie. Robi to za nie aplikacja ',h('b',{},'Skróty'),' — minutnik z Zegara dzwoni zawsze, także w trybie Nie przeszkadzać.'),
-    h('b',{},'Skrót 1 — nazwij go dokładnie: ',h('code',{},SC_TIMER)),
-    h('ol',{},
-      h('li',{},'Skróty → ',h('b',{},'＋'),' → nazwa u góry: ',h('code',{},SC_TIMER),'.'),
-      h('li',{},'Dodaj akcję ',h('b',{},'Jeżeli'),' (If). Warunek: ',h('b',{},'Dane wejściowe skrótu'),' → ',h('b',{},'zawiera'),' → wpisz ',h('code',{},'cisza'),'.'),
-      h('li',{},'Do środka bloku „Jeżeli” dodaj ',h('b',{},'Ustaw tryb skupienia'),' (Set Focus): ',h('b',{},'Włącz'),' → ',h('b',{},'Nie przeszkadzać'),' → ',h('b',{},'Do wyłączenia'),'. Część „W przeciwnym razie” zostaw pustą.'),
-      h('li',{},'Pod „Koniec jeżeli” dodaj ',h('b',{},'Pobierz liczby z danych wejściowych'),' (Get Numbers from Input) i ustaw na ',h('b',{},'Dane wejściowe skrótu'),'.'),
-      h('li',{},'Na końcu dodaj ',h('b',{},'Uruchom minutnik'),' (Start Timer). Jako czas stuknij pole i wybierz zmienną ',h('b',{},'Liczby'),', jednostka: ',h('b',{},'minuty'),'.')),
-    h('b',{},'Skrót 2 — nazwij go: ',h('code',{},SC_END)),
-    h('ol',{},h('li',{},'Jedna akcja: ',h('b',{},'Ustaw tryb skupienia'),' → ',h('b',{},'Wyłącz'),' → ',h('b',{},'Nie przeszkadzać'),'.')),
-    h('p',{class:'muted',style:'font-size:13px'},'Przy pierwszym uruchomieniu iOS zapyta o zgodę — stuknij „Zezwalaj zawsze”. Po uruchomieniu skrótu wróć do Notatnika gestem lub przez przełącznik aplikacji.'),
-    h('div',{style:'display:flex;gap:8px;flex-wrap:wrap;margin-top:8px'},
-      h('button',{class:'smallbtn',onclick:()=>runShortcut(SC_TIMER,'1')},'Test: minutnik 1 min'),
-      h('button',{class:'smallbtn',onclick:()=>runShortcut(SC_TIMER,'1 cisza')},'Test: + Nie przeszkadzać'),
-      h('button',{class:'smallbtn',onclick:()=>runShortcut(SC_END,'')},'Test: wyłącz')),
-    h('div',{style:'margin-top:12px'},switchRow('Skróty są gotowe — używaj ich',st.shortcuts,async v=>{st.shortcuts=v;await saveSettings();S._guideOpen=false;render();}))));
-  return card;
+function editSession(t,s){
+  const d={...s};
+  const ty=TYPES[t.type]||TYPES.todo;
+  const timeInp=h('input',{class:'inp',type:'time',value:d.time||'',onchange:e=>{d.time=e.target.value;}});
+  const body=h('div',{},
+    h('div',{class:'remcard',style:'margin-top:4px'},h('b',{},taskName(t)),h('div',{class:'muted',style:'font-size:14px;margin-top:2px'},`${ty.label}${t.subject?' · '+t.subject:''}${t.due?' · termin: '+relDue(t.due)+(t.time?' '+fmtT(t.time):''):''}`)),
+    field('Dzień',h('input',{class:'inp',type:'date',value:d.date,onchange:e=>{if(e.target.value)d.date=e.target.value;}})),
+    field('Godzina',h('div',{class:'inrow'},timeInp,h('button',{class:'bigbtn sec2',style:'flex:.7',onclick:()=>{d.time='';timeInp.value='';}},'Bez godziny'))),
+    field('Na jak długo',durSelect(d.dur,v=>{d.dur=v;})),
+    h('div',{class:'field'},switchRow('Zrobione',d.done,v=>{d.done=v;})),
+    h('div',{class:'field'},h('button',{class:'bigbtn sec2',onclick:()=>{sh.close();setTimeout(()=>editTask(t),300);}},'Otwórz całe zadanie')),
+    h('div',{class:'field'},h('button',{class:'bigbtn danger',onclick:async()=>{
+      if(!confirm('Usunąć ten dzień pracy z planu? Samo zadanie zostanie.'))return;
+      t.sessions=t.sessions.filter(x=>x!==s);
+      if(t.type==='todo'&&!t.sessions.length&&!t.due){await deleteTask(t);}else await saveTask(t);
+      sh.close();render();toast('Usunięto z planu');}},'Usuń z planu')));
+  const sh=sheet({title:'Zaplanowana praca',sub:dlong(s.date),body,full:true,left:'Anuluj',right:'Zapisz',onRight:async()=>{
+    if(d.time&&!d.dur)d.dur=60;
+    Object.assign(s,d);
+    if(t.type==='todo'){t.done=t.sessions.every(x=>x.done);t.doneAt=t.done?Date.now():null;}
+    t.sessions.sort((a,b)=>a.date.localeCompare(b.date)||(a.time||'').localeCompare(b.time||''));
+    await saveTask(t);render();toast('Zapisano');}});
 }
 
 /* ---- SETTINGS ---- */
@@ -1142,7 +1156,7 @@ function renderSettings(hdr,view){
   view.append(card);
   view.append(h('div',{class:'sec'},'Kopia zapasowa i przenoszenie'),
     h('div',{class:'card',style:'padding:12px'},
-      h('div',{class:'hint',style:'margin:0 2px 12px'},'Dane (notatki, zadania, zdjęcia, pliki, statystyki nauki) są zapisane tylko na tym urządzeniu. Aby przenieść je między iPhone’em a iPadem: wyeksportuj kopię, wyślij ją AirDropem i zaimportuj na drugim urządzeniu.'),
+      h('div',{class:'hint',style:'margin:0 2px 12px'},'Dane (notatki, zadania, zdjęcia, pliki) są zapisane tylko na tym urządzeniu. Aby przenieść je między iPhone’em a iPadem: wyeksportuj kopię, wyślij ją AirDropem i zaimportuj na drugim urządzeniu.'),
       h('button',{class:'bigbtn',onclick:exportBackup},svg(IC.share),'Eksportuj kopię'),
       h('label',{class:'bigbtn sec2',style:'margin-top:8px;cursor:pointer'},'Importuj kopię',h('input',{type:'file',accept:'.json,application/json',style:'display:none',onchange:e=>{const f=e.target.files[0];e.target.value='';if(f)importBackup(f);}})),
       h('div',{id:'usage',class:'hint center',style:'margin-top:10px'})));
@@ -1152,7 +1166,7 @@ function renderSettings(hdr,view){
   view.append(h('div',{class:'hint center',style:'margin:18px 0'},`Notatnik studiów · wersja ${APP_VERSION}`));
   if(navigator.storage&&navigator.storage.estimate)navigator.storage.estimate().then(e=>{const u=$('#usage');if(u)u.textContent=`Zajęte miejsce: ${(e.usage/1048576).toFixed(1)} MB`;});
 }
-const APP_VERSION='2.0';
+const APP_VERSION='3.0';
 function editClass(c){
   const isNew=!c;
   const d=c?{...c}:{id:uid(),day:0,start:'08:00',end:'09:30',name:'',kind:'W',room:''};
@@ -1201,9 +1215,7 @@ async function importBackup(file){
   let last=todayISO();
   document.addEventListener('visibilitychange',()=>{
     if(document.hidden)return;
-    const T=S.timer;if(T&&!T.ended&&Date.now()>=T.endsAt){phaseEnd();return;}
-    if(todayISO()!==last){last=todayISO();if(!document.querySelector('.ov'))render();}
-    else if(S.tab==='study'&&!document.querySelector('.ov'))render();
+    if(todayISO()!==last){last=todayISO();S.planDay=null;if(!document.querySelector('.ov'))render();}
   });
 })();
 </script>
